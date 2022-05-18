@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckBox</title>
+    <style>
+    </style>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+    </div>
+    <div>
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+    </div>
+    <div>
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+        <input type="checkbox">
+    </div>
+
+</body>
+<script>
+    $(document).ready(function() {    
+    var x = y = mousekey = 0;
+    $(document).bind("mousedown", function (e) {
+        $("input").removeAttr("checked");
+        mousekey = true;
+        $('body').append('<div id="divSelectArea" style="position:absolute;background-color:rgb(168, 226, 245);"></div>');
+        x = e.pageX;
+        y = e.pageY;
+        $('#divSelectArea').css({ top: e.pageY, left: e.pageX }).fadeTo(12, 0.2);
+    }).mousemove(function (e) {
+        if (mousekey) {
+            $('#divSelectArea').css({ outline: "2px dashed #309cd0",top: e.pageY > y ? y : e.pageY, left: e.pageX > x ? x : e.pageX, height: Math.abs(e.pageY - y), width: Math.abs(e.pageX - x) });
+        }
+        Select();
+    }).mouseup(function () {
+        x = y = mousekey = 0;
+        $('#divSelectArea').remove();
+    });            
+    });
+    function Select() {
+    //取出所有input元素放入array
+     var array = document.querySelectorAll('input'),
+        $SDA = $('#divSelectArea'),
+        SDATop = $SDA.position().top,
+        SDALeft = $SDA.position().left,
+        SDATop2 = SDATop + $SDA.height(),
+        SDALeft2 = SDALeft + $SDA.width();
+    //遍历array
+     array.forEach(function(e) {
+        var $dom = $(e),
+        left = $dom.position().left,
+        top = $dom.position().top,
+        left2 = left + $dom.width(),
+        top2 = top + $dom.height();
+    //进行碰撞检测如果光标选框和input元素碰撞变为勾选状态
+         if (!(left > SDALeft2 || left2 < SDALeft || top > SDATop2 || top2 < SDATop)) {
+             $dom.prop("checked","checked");
+         }
+     })
+ }
+</script>
+</html>
